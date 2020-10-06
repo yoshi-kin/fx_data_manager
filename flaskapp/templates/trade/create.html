@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %} 新規作成 {% endblock %}</h1>
+  <a href="{{ url_for('trade.history') }}"> トレード履歴</a></br>
+  <a href="{{ url_for('trade.dashboard') }}"> ダッシュボード</a></br>
+  <a href="{{ url_for('auth.logout') }}"> ログアウト</a>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="date">日付:</label>
+    <input name="date" type='date' id="date" required><br>
+    
+    <label for="pare">通貨ペア:</label>
+    
+    <input name="pare" list="pare" required>
+    <datalist id='pare'>
+      <option value='USD/JPY'>
+    </datalist><br>
+    
+    <label for="amount">枚数:</label>
+    <input name="amount" type='number' id="password" required></br>
+    
+    <label for="result">結果:</label>
+    <input name="result" type='number'　id="result" required></br>
+
+    <input type="submit" value="作成">
+  </form>
+  
+{% endblock %}

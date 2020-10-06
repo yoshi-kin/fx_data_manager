@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %} ダッシュボード {% endblock %}</h1>
+  <a href="{{ url_for('trade.create') }}"> 新規作成</a></br>
+  <a href="{{ url_for('trade.history') }}"> トレード履歴</a></br>
+  <a href="{{ url_for('auth.logout') }}"> ログアウト</a>
+{% endblock %}
+
+{% block content %}
+<table width='60%'>
+  <tr>
+    <th>総収支</th>
+    <th>利確平均</th>
+    <th>損切平均</th>
+    <th>回数</th>
+    <th>勝率</th>
+    <th>R/R</th>
+  </tr>
+  <tr>
+    <th width='20%'>¥ {{ all_sum }}</th>
+    <th width='20%'>¥ {{ win_sum }}</th>
+    <th width='20%'>¥ {{ lose_sum }}</th>
+    <th width='13.3%'>{{ trade_count }}</th>
+    <th width='13.3%'>{{ win_ratio }}%</th>
+    <th width='13.3%'>{{ risk_reward }}</th>
+  </tr>
+</table>
+<div class='chart-container' style="position: relative; width:60vw; height:60vh;">
+ <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+
+<script>
+// bar
+// var ctx = document.getElementById("myChart");
+// var myChart = new Chart(ctx, {
+//     type: 'bar',
+//     data: {
+//         labels: ["赤", "青", "黄", "緑", "紫", "橙"],
+//         datasets: [{
+//             label: '得票数',
+//             data: [12, 19, 3, 5, 2, 3],
+//             backgroundColor: [
+//                 'rgba(255, 99, 132, 0.2)',
+//                 'rgba(54, 162, 235, 0.2)',
+//                 'rgba(255, 206, 86, 0.2)',
+//                 'rgba(75, 192, 192, 0.2)',
+//                 'rgba(153, 102, 255, 0.2)',
+//                 'rgba(255, 159, 64, 0.2)'
+//             ],
+//             borderColor: [
+//                 'rgba(255,99,132,0.2)',
+//                 'rgba(54, 162, 235, 0.2)',
+//                 'rgba(255, 206, 86, 0.2)',
+//                 'rgba(75, 192, 192, 0.2)',
+//                 'rgba(153, 102, 255, 0.2)',
+//                 'rgba(255, 159, 64, 0.2)'
+//             ],
+//             borderWidth: 1
+//         }]
+//     },
+//     options: {
+//         scales: {
+//             yAxes: [{
+//                 ticks: {
+//                     beginAtZero:true
+//                 }
+//             }]
+//         }
+//     }
+// });
+
+// line
+var ctx = document.getElementById('myChart');
+var dates = {{ dates | tojson }};
+var results = {{ results | tojson}};
+var chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: dates,
+        datasets: [{
+            label: "収支グラフ",
+            borderColor: 'rgb(54, 200, 255)',
+            data: results,
+        }]
+    },
+    options: {}
+});
+</script>
+{% endblock %}

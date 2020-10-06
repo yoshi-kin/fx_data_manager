@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %} トレード履歴 {% endblock %}</h1>
+  <a href="{{ url_for('trade.create')}}"> 新規作成</a></br>
+  <a href="{{ url_for('trade.dashboard') }}"> ダッシュボード</a></br>
+  <a href="{{ url_for('auth.logout') }}"> ログアウト</a>
+{% endblock %}
+
+{% block content %}
+{% if not trades %}
+  <p> No trade data. </p>
+{% else %}
+  <table width='60%'>
+    <tr>
+      <th width='20%'>日付</th>
+      <th width='20%'>通貨ペア</th>
+      <th width='20%'>枚数</th>
+      <th width='20%'>結果</th>
+      <th width='10%'></th>
+      <th width='10%'></th>
+    </tr>
+    {% for trade in trades %}
+    <tr>
+      <th>{{ trade.date }}</th>
+      <th>{{ trade.pare }}</th>
+      <th>{{ trade.amount }}</th>
+      <th>{{ trade.result }} 円</th>
+      <th>
+        <form action="{{ url_for('trade.update', id=trade.id)}}"  method='post'>
+          <input type='submit' value='編集'>
+        </form>
+        </th>
+      <th>
+        <form action="{{ url_for('trade.delete', id=trade.id)}}"  method='post'>
+          <input type='submit' value='削除'>
+        </form>
+        </th>
+    </tr>
+    {% endfor %}
+  </table>
+{% endif %}
+{{ pagination.info }}
+{{ pagination.links }}
+{% endblock %}
